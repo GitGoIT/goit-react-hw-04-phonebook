@@ -1,0 +1,31 @@
+.list {
+    width: 750px;
+    margin-left: 55px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;   
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    gap: 10px;  
+} 
+
+.item::before {
+    content: '';
+    display: list-item;  
+}
+
+
+.btn {
+    width: 100px;
+    height: 37px;
+    margin-left: 20px;
+    font-size: 23px;
+    border: 1px solid rgb(216, 213, 213);
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+}
