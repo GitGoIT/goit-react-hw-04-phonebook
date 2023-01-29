@@ -1,7 +1,6 @@
 // import { ContactForm } from "./ContactForm/ContactForm.jsx"
 import { Component } from "react";
 import { nanoid } from "nanoid";
-import propTypes from 'prop-types';
 import css from './/ContactForm/ContactForm.module.css';
 
 
