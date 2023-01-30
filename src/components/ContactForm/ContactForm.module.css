@@ -16,7 +16,7 @@
     height: 60px;
     border: 1px solid rgb(216, 213, 213);
     border-radius: 4px;
-    font-size: 26px;
+    font-size: 30px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
@@ -36,8 +36,7 @@
     transition: background-color var(--transition-dur-and-func);
 }
 
- .btn:hover,
- .btn:focus {
+ .btn:hover {
      background-color: #03b453;
  }
  
