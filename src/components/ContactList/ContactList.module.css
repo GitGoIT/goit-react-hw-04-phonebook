@@ -1,32 +1,34 @@
 .list {
-    width: 750px;
+    width: 410px;
+    margin-top: 40px;
     display: flex;
     flex-direction: column;
-    gap: 20px;  
-    padding: 25px;
+    gap: 8px;  
 }
 
 .item {
+    width: 410px;
     display: flex;
     align-items: center; 
+    font-size: 19px;
 } 
 
 .item::before {
     content: '';
-    display: list-item; 
-    margin-left: 40px; 
+    display: list-item;
+    color: #1a80d4;
 }
 
 .btn {
-    width: 100px;
-    height: 60px;
+    width: 60px;
+    height: 35px;
     margin-left: auto;
     font-size: 23px;
     border-radius: 4px;
     background: #2196F3;
     border: #2196F3;
     color: #FFFFFF;
-    font-size: 26px;
+    font-size: 14px;
     font-weight: 500;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     cursor: pointer;

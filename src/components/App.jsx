@@ -76,8 +76,8 @@ isDublicate(name, number) {
           flexDirection: "column",
           justifyContent: 'center',
           alignItems: 'center',
-          fontSize: 40,
-          color: '#010101'
+          fontSize: 26,
+          color: '#010101',
         }}
       >
         <h1>Phonebook</h1>
