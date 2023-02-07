@@ -29,7 +29,7 @@ export class App extends Component {
   addContact = ({ name, number }) => {
     if (this.isDublicate(name, number)) {
       // cheking for dublicate in state list
-      return alert(`Name: "${name}" or number: "${number}" is already in contacts, please check it in contacts list`);
+      return alert(`Name: "${name}" or number: "${number}" is already in contacts, please check the contacts list`);
     }
     this.setState(prevState => {
       const { contacts } = prevState;
