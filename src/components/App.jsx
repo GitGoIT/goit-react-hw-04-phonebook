@@ -19,8 +19,6 @@ export class App extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // console.log("prevState", prevState);
-    // console.log('currentState', this.state);
     const { contacts } = this.state;
     if (prevState.contacts.length !== contacts.length) {
       // setItem to LS works only if add new contact, but not for filter changes
@@ -31,7 +29,7 @@ export class App extends Component {
   addContact = ({ name, number }) => {
     if (this.isDublicate(name, number)) {
       // cheking for dublicate in state list
-      return alert(`${name} is already in contacts`);
+      return alert(`Name: "${name}" or number: "${number}" is already in contacts, please check it in contacts list`);
     }
     this.setState(prevState => {
       const { contacts } = prevState;
@@ -41,7 +39,7 @@ export class App extends Component {
         name,
         number,
       };
-      return { contacts: [newContact, ...contacts], name: '', number: '' };
+      return { contacts: [newContact, ...contacts]};
     });
   };
 
@@ -58,7 +56,7 @@ export class App extends Component {
     const { contacts } = this.state;
     const result = contacts.find(({ name, number }) => {
       return (
-        name.toLowerCase() === normalizedName &&
+        name.toLowerCase() === normalizedName ||
         number.toLowerCase() === normalizedNumber
       );
     });
