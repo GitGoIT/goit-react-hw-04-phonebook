@@ -107,7 +107,22 @@ export class App extends Component {
 
         <h2>Contacts</h2>
         <Filter handleChange={handleFilter} />
-        <ContactList contacts={contacts} deleteContact={deleteContact} />
+        <>
+          {contacts.length !== 0 && (
+          <ContactList contacts={contacts} deleteContact={deleteContact} />
+        )}
+        
+          {contacts.length === 0 && (
+            <p
+              style={{
+                marginTop: '40px', 
+                fontSize: '19px',
+                color: '#1a80d4',
+            }}>
+            Your contacts list is empty. Please add contact.
+          </p>
+        )}
+        </>
       </div>
     );
   }
