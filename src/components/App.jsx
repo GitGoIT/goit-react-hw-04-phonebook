@@ -1,59 +1,23 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import { ContactForm } from './ContactForm/ContactForm.jsx';
 import { ContactList } from './ContactList/ContactList.jsx';
 import { Filter } from './Filter/Filter.jsx';
 
-export class App extends Component {
-  state = {
-    contacts: [],
-    filter: '',
-  };
-
-  componentDidMount() {
+export const App = () => {
+  const [contacts, setContacts] = useState(() => {
     const contacts = JSON.parse(localStorage.getItem('my-contacts'));
-    if (contacts && contacts.length) {
-      // cheking for if 'my-contacts' is in LS and it lenght > 0, than 'true'
-      this.setState({ contacts });
-    }
-  }
+    return contacts?.length ? contacts : []; // cheking if contacs.length > 0 return contacts, else return [] empty array
+  });
+  const [filter, setFilter] = useState('');
 
-  componentDidUpdate(prevProps, prevState) {
-    const { contacts } = this.state;
-    if (prevState.contacts.length !== contacts.length) {
-      // setItem to LS works only if add new contact, but not for filter changes
-      localStorage.setItem('my-contacts', JSON.stringify(contacts));
-    }
-  }
+  useEffect(() => {
+    localStorage.setItem('my-contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
-  addContact = ({ name, number }) => {
-    if (this.isDublicate(name, number)) {
-      // cheking for dublicate in state list
-      return alert(`Name: "${name}" or number: "${number}" is already in contacts, please check the contacts list`);
-    }
-    this.setState(prevState => {
-      const { contacts } = prevState;
-
-      const newContact = {
-        id: nanoid(),
-        name,
-        number,
-      };
-      return { contacts: [newContact, ...contacts]};
-    });
-  };
-
-  deleteContact = id => {
-    this.setState(({ contacts }) => {
-      const newContacts = contacts.filter(contact => contact.id !== id);
-      return { contacts: newContacts };
-    });
-  };
-
-  isDublicate(name, number) {
+  const isDublicate = (name, number) => {
     const normalizedName = name.toLowerCase();
     const normalizedNumber = number.toLowerCase();
-    const { contacts } = this.state;
     const result = contacts.find(({ name, number }) => {
       return (
         name.toLowerCase() === normalizedName ||
@@ -61,10 +25,34 @@ export class App extends Component {
       );
     });
     return Boolean(result);
-  }
+  };
 
-  getFilteredContacts() {
-    const { filter, contacts } = this.state;
+  const addContact = ({ name, number }) => {
+    if (isDublicate(name, number)) {
+      // cheking for dublicate in state list
+      return alert(
+        `Name: "${name}" or number: "${number}" is already in contacts, please check the contacts list`
+      );
+    }
+    setContacts(prevContacts => {
+      const newContact = {
+        id: nanoid(),
+        name,
+        number,
+      };
+      return [newContact, ...prevContacts];
+    });
+  };
+
+  const deleteContact = id => {
+    setContacts(prevContacts =>
+      prevContacts.filter(contact => contact.id !== id)
+    );
+  };
+
+  const handleFilter = ({ target }) => setFilter(target.value);
+
+  const getFilteredContacts = () => {
     if (!filter) {
       // cheking if filter input is empty (false) then do nothing
       return contacts;
@@ -77,53 +65,50 @@ export class App extends Component {
       );
     });
     return result;
-  }
-
-  handleFilter = ({ target }) => {
-    this.setState({ filter: target.value });
   };
 
-  render() {
-    const { addContact, deleteContact, handleFilter } = this;
-    const contacts = this.getFilteredContacts();
+  const filteredContacts = getFilteredContacts();
 
-    return (
-      <div
-        style={{
-          marginLeft: 'auto',
-          marginRight: 'auto',
-          width: '70vh',
-          height: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          fontSize: 26,
-          color: '#010101',
-        }}
-      >
-        <h1>Phonebook</h1>
-        <ContactForm onSubmit={addContact} />
+  return (
+    <div
+      style={{
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        width: '70vh',
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontSize: 26,
+        color: '#010101',
+      }}
+    >
+      <h1>Phonebook</h1>
+      <ContactForm onSubmit={addContact} />
 
-        <h2>Contacts</h2>
-        <Filter handleChange={handleFilter} />
-        <>
-          {contacts.length !== 0 && (
-          <ContactList contacts={contacts} deleteContact={deleteContact} />
+      <h2>Contacts</h2>
+      <Filter handleChange={handleFilter} />
+      <>
+        {contacts.length !== 0 && (
+          <ContactList
+            contacts={filteredContacts}
+            deleteContact={deleteContact}
+          />
         )}
-        
-          {contacts.length === 0 && (
-            <p
-              style={{
-                marginTop: '40px', 
-                fontSize: '19px',
-                color: '#1a80d4',
-            }}>
+
+        {contacts.length === 0 && (
+          <p
+            style={{
+              marginTop: '40px',
+              fontSize: '19px',
+              color: '#1a80d4',
+            }}
+          >
             Your contacts list is empty. Please add contact.
           </p>
         )}
-        </>
-      </div>
-    );
-  }
-}
+      </>
+    </div>
+  );
+};
